@@ -1,11 +1,14 @@
 
-from flask import Flask, render_template, session, request, redirect
+from flask import Flask, render_template, session, request, redirect, abort
 from TokenGenerator import TokenGenerator
+
+from pprint import pprint
 
 # I am importing a sample data to verify. Users can setup a database and
 # perform verification using SQLAlchemy
 
 from sample_credentials import userData
+from WebhookHelper import WebhookHelper
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "15de2e5584da6716f650e3d50fa752cd"
@@ -22,6 +25,19 @@ def login():
         token = TokenGenerator(userDetails=userData)
         return redirect(token.generateUrl())
     return redirect("/error/error occured")
+
+@app.route("/checkout",methods=["POST"])
+def checkoutDataWebhookEndpoint():
+    if request.method == "POST":
+        data = request.get_data()
+        webhookHelper = WebhookHelper()
+        verified = webhookHelper.verify_webhook(data, request.headers.get('X-Shopify-Hmac-SHA256'))
+        if not verified:
+            abort(401)
+
+        print ("Received Data: \n")
+        pprint(data,indent=4)
+        return ('',200)
 
 # @app.route("/proclogin", methods=["POST"])
 # def procLogin():
