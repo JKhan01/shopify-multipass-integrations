@@ -34,10 +34,10 @@ app.get("/", (req, res) => {
 app.post("/login",(req,res)=>{
     try {
         console.log(req.body);
-    // res.status(204).sendStatus(204);
         urlGenObject = new TokenGenerator();
-        console.log(urlGenObject.generateUrl());
-        res.redirect(303,"http://localhost:3000");
+        url = urlGenObject.generateUrl();
+        console.log(url);
+        res.redirect(303,url);
         
     } catch (error) {
         console.log(error);
