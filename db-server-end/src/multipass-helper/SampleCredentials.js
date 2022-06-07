@@ -6,7 +6,7 @@ const userData = {
     // "tag_string": "canadian, premium",
     // "identifier": "bob123",
     // "remote_ip": "107.20.160.121",
-    "return_to": "https://teedee-shops.myshopify.com/cart",
+    // "return_to": "https://teedee-shops.myshopify.com/cart",
     "addresses": [
       {
         "address1": "123 Oak St",
@@ -17,8 +17,8 @@ const userData = {
         "phone": "555-1212",
         "province": "Ontario",
         "zip": "123 ABC",
-        "province_code": "ON",
-        "country_code": "CA",
+        "province_code": "MH",
+        "country_code": "IND",
         "default": true
       }
     ]

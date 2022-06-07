@@ -16,5 +16,8 @@
     "morgan": "^1.10.0",
     "multipass-js": "^0.1.6",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.3"
   }
 }
