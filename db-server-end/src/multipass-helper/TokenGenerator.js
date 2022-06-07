@@ -10,6 +10,7 @@ class TokenGenerator{
     // constructor(){}
 
     constructor(userDetails){
+        
         userData.SampleCredentials.email=userDetails.getUserEmail();
         userData.SampleCredentials.first_name = userDetails.getUserFirstName();
         userData.SampleCredentials.last_name = userDetails.getUserLastName();

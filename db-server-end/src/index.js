@@ -82,14 +82,16 @@ app.post("/login",(req,res)=>{
             // return (results)=>{
             //     queryResult = results;
             // }
-            if (results.length != 0){
-                // console.log(JSON.stringify(results[0]));
-                const v = JSON.stringify(results[0]);
-                userModel.getUserFirstName = JSON.parse(v).user_address;
-                console.log(userModel.getUserAddress());
-            }
+            // if (results.length != 0){
+            //     // console.log(JSON.stringify(results[0]));
+            //     const v = JSON.stringify(results[0]);
+            //     userModel.getUserFirstName = JSON.parse(v).user_address;
+            //     console.log(userModel.getUserAddress());
+            // }
             // return this.getDetailsCallback(results[0]);
-            res.sendStatus(204);
+            // res.sendStatus(204);
+            res.redirect(303,"/generate/"+JSON.stringify(results));
+            
         }
         );
 
@@ -116,6 +118,37 @@ app.post("/login",(req,res)=>{
     
 })
 
+app.get("/generate/:value",(req,res)=>{
+    console.log("Value: "+req.params.value);
+    if (JSON.parse(req.params.value).length != 0){
+        let fetchedData = JSON.parse(req.params.value)[0];
+        let userModel = new UserModel();
+    
+        userModel.setUserEmail(fetchedData.user_email);
+        userModel.setUserFirstName(fetchedData.first_name);
+        userModel.setUserLastName(fetchedData.last_name);
+    
+        userModel.setUserAddress(fetchedData.address_line1);
+        userModel.setUserCity(fetchedData.address_city);
+        userModel.setUserProvince(fetchedData.address_province);
+        userModel.setUserCountry(fetchedData.address_country);
+        userModel.setUserZip(fetchedData.address_zip);
+        console.log(userModel.getUserAddress());
+    
+        urlGenObject = new TokenGenerator(userModel);
+        url = urlGenObject.generateUrl();
+        console.log(url);
+        res.redirect(303,url);
+    }else{
+        res.redirect(303,"http://localhost:3000/login?error=invalid");
+    }
+
+    
+    
+    // res.send("Success");
+
+})
+
 app.get("/userdetails", (req,res) =>{
     const userService = new UserService();
     const userModel = new UserModel();
@@ -128,7 +161,7 @@ app.get("/userdetails", (req,res) =>{
     res.send("WOrking");
 })
 
-app.post("/orders", (req,res)=>{
+app.post("/checkout", (req,res)=>{
     try {
         console.log(req.body);
         console.log(req.headers);

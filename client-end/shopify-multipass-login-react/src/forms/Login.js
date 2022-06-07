@@ -25,8 +25,16 @@ class Login extends Component{
 
 
     }
+
+    componentDidMount(){
+        let url = new URL(window.location.href);
+        if (url.searchParams.get("error") === "invalid"){
+            alert("Invalid Credentials were provided. Please provide correct credentials.");
+        }
+    }
+
     render(){
-        return (<div className='container'><form onSubmit={this.validateAndLogin} method="POST" action='http://localhost:5005/login'>
+        return (<div className='container'><form method="POST" action='http://localhost:5005/login'>
             <input type="email" name='email' placeholder="Enter Email" className='form-control' required></input>
             <br></br>
             <input type="password" name="password" placeholder="Password" className="form-control" required />
