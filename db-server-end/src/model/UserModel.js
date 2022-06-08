@@ -32,9 +32,13 @@ class UserModel{
     userCountry;
     userFirstName;
     userLastName;
+    userPhoneNumber;
     
     constructor(){}
 
+    getUserPhoneNumber(){
+        return this.userPhoneNumber;
+    }
     getUserFirstName(){
         return this.userFirstName;
     }
@@ -101,6 +105,10 @@ class UserModel{
 
     setUserLastName(lastName){
         this.userLastName = lastName;
+    }
+
+    setUserPhoneNumber(phone){
+        this.userPhoneNumber = phone;
     }
 
 

@@ -30,7 +30,9 @@ class Login extends Component{
         let url = new URL(window.location.href);
         if (url.searchParams.get("error") === "invalid"){
             alert("Invalid Credentials were provided. Please provide correct credentials.");
-        }
+        }else if (url.searchParams.get("created") === "true"){
+            alert("User Created Successfully!. Signin to Continue");
+        } 
     }
 
     render(){
@@ -39,6 +41,7 @@ class Login extends Component{
             <br></br>
             <input type="password" name="password" placeholder="Password" className="form-control" required />
             <br></br>
+            <label>Not Registered?<a href="/signup">Signup</a></label><br></br>
             <button type="submit" className="btn btn-success">Submit</button>
         </form></div>);
     }

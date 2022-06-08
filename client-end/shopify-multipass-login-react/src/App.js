@@ -2,6 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './forms/Login';
 import { Route, Routes } from 'react-router-dom';
+import Signup from './forms/Signup';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       </div>
       <Routes>
         <Route exact path="/login" element={<Login />}></Route>
+        <Route exact path="/signup" element={<Signup />}></Route>
       </Routes>
     </div>
   );

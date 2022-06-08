@@ -21,6 +21,7 @@ class TokenGenerator{
         userData.SampleCredentials.addresses[0].country = userDetails.getUserCountry();
         userData.SampleCredentials.addresses[0].first_name = userDetails.getUserFirstName();
         userData.SampleCredentials.addresses[0].last_name = userDetails.getUserLastName();
+        userData.SampleCredentials.addresses[0].phone = userDetails.getUserPhoneNumber();
     }
 
     generateUrl(){

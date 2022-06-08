@@ -62,9 +62,6 @@ app.post("/login",(req,res)=>{
         userModel.setUserEmail(req.body.email);
         userModel.setUserPassword(req.body.password);
 
-        // const userService = new UserService();
-        // let result = async ()=>{return await userService.getUserDetails(userModel)};
-        // urlGenObject = new TokenGenerator();
 
         const columnValue = userModel.getUserEmail();
         const queryString = `select * from ${tableName} where ${columnName01}='${columnValue}' and ${columnName02} = '${userModel.getUserPassword()}'`;
@@ -77,39 +74,12 @@ app.post("/login",(req,res)=>{
                 return;
                 
             }
-            // queryResult = JSON.stringify(results);
-            // console.log("Fetched Result: " + JSON.stringify(results[0]));
-            // return (results)=>{
-            //     queryResult = results;
-            // }
-            // if (results.length != 0){
-            //     // console.log(JSON.stringify(results[0]));
-            //     const v = JSON.stringify(results[0]);
-            //     userModel.getUserFirstName = JSON.parse(v).user_address;
-            //     console.log(userModel.getUserAddress());
-            // }
-            // return this.getDetailsCallback(results[0]);
-            // res.sendStatus(204);
+
             res.redirect(303,"/generate/"+JSON.stringify(results));
             
         }
         );
 
-        // console.log(queryResult);
-        // return this.queryResult;
-    
-        // console.log("Line of Code Reached");
-        // console.log(JSON.stringify(result));
-        // if (result != null){
-        //     // userModel.setUserAddress(result[0].)
-        //     // urlGenObject = new TokenGenerator();
-        //     // url = urlGenObject.generateUrl();
-        //     // console.log(url);
-        //     // res.redirect(303,url);
-        //     console.log("Condition to be written");
-        // }
-        
-        // res.sendStatus(204);
 
     } catch (error) {
         console.log(error);
@@ -147,6 +117,57 @@ app.get("/generate/:value",(req,res)=>{
     
     // res.send("Success");
 
+})
+
+app.post("/signup",(req,res)=>{
+    try {
+        let userModel = new UserModel();
+        userModel.setUserAddress(req.body.address_line1);
+        userModel.setUserCity(req.body.address_city);
+        userModel.setUserCountry(req.body.address_country);
+        userModel.setUserEmail(req.body.email);
+        userModel.setUserFirstName(req.body.first_name);
+        userModel.setUserLastName(req.body.last_name);
+        userModel.setUserPassword(req.body.password);
+        userModel.setUserPhoneNumber(req.body.phone_number);
+
+        userModel.setUserProvince(req.body.address_province);
+        userModel.setUserZip(req.body.address_zip);
+
+        connection.query(`select * from ${tableName} where ${columnName01} = '${userModel.getUserEmail()}'`,
+        (error,results)=>{
+            if (error){
+                console.log("Error Occured!\n"+error);
+                res.sendStatus(500); 
+            }
+            if (results.length != 0){
+                res.redirect(303,"http://localhost:3000/signup?error=exists");
+            }else{
+                const queryString = `insert into ${tableName} values('${userModel.getUserEmail()}',
+                            '${userModel.getUserPassword()}','${userModel.getUserFirstName()}','${userModel.getUserLastName()}',
+                            '${userModel.getUserAddress()}', '${userModel.getUserCity()}','${userModel.getUserProvince()}',
+                            '${userModel.getUserCountry()}','${userModel.getUserZip()}','${userModel.getUserPhoneNumber()}'
+                            );`;
+
+                console.log(queryString);
+                connection.query(queryString,(error,results)=>{
+                    if (error){
+                        console.log("Error Occured!\n"+error);
+                        res.redirect(303,"http://localhost:3000/signup?error=query");
+                        
+                    }
+                        console.log("Inserted Successfully!");
+                        res.sendStatus(303, "http://localhost:3000/login?created=true");
+                });
+            }
+        }
+        );
+
+
+    } catch (error) {
+        console.log("Error Occured \n"+error);
+        res.sendStatus(500); 
+    }
 })
 
 app.get("/userdetails", (req,res) =>{

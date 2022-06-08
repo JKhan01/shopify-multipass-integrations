@@ -9,22 +9,22 @@ class UserDao{
     queryResult = {};
     constructor(){
 
-        this.connection = mysql.createConnection({
-        host     : 'localhost',
-        port: 3306,
-        user     : 'root',
-        password : 'root',
-        database : 'shopify_multipass'
-        });
+        // this.connection = mysql.createConnection({
+        // host     : 'localhost',
+        // port: 3306,
+        // user     : 'root',
+        // password : 'root',
+        // database : 'shopify_multipass'
+        // });
 
-        this.connection.connect(function(err) {
-        if (err) {
-            console.error('error connecting: ' + err.stack);
-            return;
-        }
+        // this.connection.connect(function(err) {
+        // if (err) {
+        //     console.error('error connecting: ' + err.stack);
+        //     return;
+        // }
 
-        console.log('connected ');
-        });
+        // console.log('connected ');
+        // });
 
     }
 
@@ -60,25 +60,43 @@ class UserDao{
         this.queryResult = await result;
     }
 
-    postUserDetails(userModel){
+    postUserDetails(userModel,connection){
         const queryString = `insert into ${tableName} values('${userModel.getUserEmail()}',
-                            '${userModel.getUserPassword()}',
-                            '${userModel.getUserAddress()}');`;
+                            '${userModel.getUserPassword()}','${userModel.getUserFirstName()}','${userModel.getUserLastName()}',
+                            '${userModel.getUserAddress()}', '${userModel.getUserCity()}','${userModel.getUserProvince()}',
+                            '${userModel.getUserCountry()}','${userModel.getUserZip()}','${userModel.getUserPhoneNumber()}'
+                            );`;
 
         console.log(queryString);
 
         let queryStatus = false;
-        this.connection.query(queryString,(error,results)=>{
+        let checkFlag = true;
+        connection.query(`select * from ${tableName} where ${columnName01} = '${userModel.getUserEmail()}'`,
+        (error,results)=>{
             if (error){
                 console.log("Error Occured!\n"+error);
-                return;
-                
+                return; 
             }
-                console.log("Inserted Successfully!");
-                queryStatus = true;
-        });
+            if (results){
+                checkFlag = false;
+            }
+        }
+        )
+        if (checkFlag){
+            connection.query(queryString,(error,results)=>{
+                if (error){
+                    console.log("Error Occured!\n"+error);
+                    return;
+                    
+                }
+                    console.log("Inserted Successfully!");
+                    queryStatus = true;
+            });
+        }
+        
 
-        return queryStatus;
+
+        return [checkFlag,queryStatus];
     }
 
     disconnectConnection(){

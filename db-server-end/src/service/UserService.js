@@ -11,10 +11,10 @@ class UserService{
         return details;
     }
 
-    postUserDetails(userModel){
+    postUserDetails(userModel, connection){
         const userDao = new UserDao();
-        let details = userDao.postUserDetails(userModel);
-        userDao.disconnectConnection();
+        let details = userDao.postUserDetails(userModel, connection);
+        // userDao.disconnectConnection();
         return details;
     }
 }
