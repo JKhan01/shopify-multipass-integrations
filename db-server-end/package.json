@@ -1,0 +1,23 @@
+{
+  "name": "db-server-end",
+  "version": "1.0.0",
+  "description": "MySQL DB Server Connection and DAO implementation for the Shopify React Webhook.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mohd Jamaluddin Khan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "helmet": "^5.1.0",
+    "morgan": "^1.10.0",
+    "multipass-js": "^0.1.6",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.3"
+  }
+}
