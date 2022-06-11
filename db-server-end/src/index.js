@@ -11,7 +11,7 @@ const UserService = require('./service/UserService.js').UserService;
 const UserModel = require('./model/UserModel').UserModel;
 
 const REACT_SERVER_URL = require("./SensitiveCred").REACT_SERVER_URL;
-
+const PROXY_MAPPER_NAME = require("./SensitiveCred").PROXY_MAPPER_NAME;
 const app = express();
 
 // adding Helmet to enhance your Rest API's security
@@ -77,7 +77,7 @@ app.post("/login",(req,res)=>{
                 
             }
 
-            res.redirect(303,"/generate/"+JSON.stringify(results));
+            res.redirect(303,PROXY_MAPPER_NAME+"/generate/"+JSON.stringify(results));
             
         }
         );
@@ -151,7 +151,7 @@ app.post("/signup",(req,res)=>{
                             '${userModel.getUserCountry()}','${userModel.getUserZip()}','${userModel.getUserPhoneNumber()}'
                             );`;
 
-                res.redirect(303,"/create/"+queryString);
+                res.redirect(303,PROXY_MAPPER_NAME+"/create/"+queryString);
             }
         }
         );
