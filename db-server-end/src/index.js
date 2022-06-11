@@ -10,6 +10,8 @@ const TokenGenerator  = require('./multipass-helper/TokenGenerator').TokenGenera
 const UserService = require('./service/UserService.js').UserService;
 const UserModel = require('./model/UserModel').UserModel;
 
+const REACT_SERVER_URL = require("./SensitiveCred").REACT_SERVER_URL;
+
 const app = express();
 
 // adding Helmet to enhance your Rest API's security
@@ -110,7 +112,7 @@ app.get("/generate/:value",(req,res)=>{
         console.log(url);
         res.redirect(303,url);
     }else{
-        res.redirect(303,"http://localhost:3000/login?error=invalid");
+        res.redirect(303,`${REACT_SERVER_URL}/login?error=invalid`);
     }
 
     
@@ -141,7 +143,7 @@ app.post("/signup",(req,res)=>{
                 res.sendStatus(500); 
             }
             if (results.length != 0){
-                res.redirect(303,"http://localhost:3000/signup?error=exists");
+                res.redirect(303,`${REACT_SERVER_URL}/signup?error=exists`);
             }else{
                 const queryString = `insert into ${tableName} values('${userModel.getUserEmail()}',
                             '${userModel.getUserPassword()}','${userModel.getUserFirstName()}','${userModel.getUserLastName()}',
@@ -153,11 +155,11 @@ app.post("/signup",(req,res)=>{
                 connection.query(queryString,(error,results)=>{
                     if (error){
                         console.log("Error Occured!\n"+error);
-                        res.redirect(303,"http://localhost:3000/signup?error=query");
+                        res.redirect(303,`${REACT_SERVER_URL}/signup?error=query`);
                         
                     }
                         console.log("Inserted Successfully!");
-                        res.sendStatus(303, "http://localhost:3000/login?created=true");
+                        res.sendStatus(303, `${REACT_SERVER_URL}/login?created=true`);
                 });
             }
         }
