@@ -151,16 +151,7 @@ app.post("/signup",(req,res)=>{
                             '${userModel.getUserCountry()}','${userModel.getUserZip()}','${userModel.getUserPhoneNumber()}'
                             );`;
 
-                console.log(queryString);
-                connection.query(queryString,(error,results)=>{
-                    if (error){
-                        console.log("Error Occured!\n"+error);
-                        res.redirect(303,`${REACT_SERVER_URL}/signup?error=query`);
-                        
-                    }
-                        console.log("Inserted Successfully!");
-                        res.sendStatus(303, `${REACT_SERVER_URL}/login?created=true`);
-                });
+                res.redirect(303,"/create/"+queryString);
             }
         }
         );
@@ -169,6 +160,25 @@ app.post("/signup",(req,res)=>{
     } catch (error) {
         console.log("Error Occured \n"+error);
         res.sendStatus(500); 
+    }
+})
+
+app.get("/create/:queryString",(req,res)=>{
+    try {
+        let queryString = req.params.queryString;
+        console.log(queryString);
+        connection.query(queryString,(error,results)=>{
+            if (error){
+                console.log("Error Occured!\n"+error);
+                res.redirect(303,`${REACT_SERVER_URL}/signup?error=query`);
+                
+            }
+                console.log("Inserted Successfully! Redirect to :" + `${REACT_SERVER_URL}/login?created=true`);
+                res.redirect(303, `${REACT_SERVER_URL}/login?created=true`);
+        });
+    } catch (error) {
+        console.log("Error Occured \n"+error);
+        res.sendStatus(500);
     }
 })
 
