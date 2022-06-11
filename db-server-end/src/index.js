@@ -110,7 +110,7 @@ app.get("/generate/:value",(req,res)=>{
         urlGenObject = new TokenGenerator(userModel);
         url = urlGenObject.generateUrl();
         console.log(url);
-        res.redirect(303,url);
+        res.redirect(303,`${REACT_SERVER_URL}/?url=${url}`);
     }else{
         res.redirect(303,`${REACT_SERVER_URL}/login?error=invalid`);
     }
