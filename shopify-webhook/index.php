@@ -67,13 +67,48 @@
                             error_log("\n".date("Y-m-d h:i:s",time())." Fetched Product Data: ".$row["productsTypeID"].",".$row["sku"].",".$row["title"],3,'_includes/error.log');
                             if ($product_id === "3"){
                                 // Subscription Logic Comes Here
-                                
+                                $sku_latest = "";
+                                $result_sku_latest = $conn->query(getLatestProductBySKUQuery('DEMD'));
+                                if ($result_sku_latest->num_rows>0){
+                                    while ($row = $result_sku_latest -> fetch_assoc()) {
+                                        $sku_latest = $row["sku"];
+                                        $product_id_latest = $row["productsTypeID"];
+                                    }
+
+                                    // Update the Asset History Table for Subscription SKU
+
+                                    $result_asset_sub = $conn->query(getUserAssetsByUserID($user_id,$sku));
+                                    if ($result_asset_sub->num_rows>0){
+                                        if ($conn -> query(updateSubscriptionAssetForUserID($user_id,$sku)) === TRUE){
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.");
+                                        }else{
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to update subscription entry into Assets Table.");
+                                        }
+                                    }else{
+                                        if (conn -> query(insertSubscriptionAssetForUserID($user_id,$sku,$product_id)) === TRUE){
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.");
+                                        }else{
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert subscription entry into Assets Table.");
+                                        }
+                                    }
+
+                                    $result_asset_issue = $conn->query(getUserAssetsByUserID($user_id,$sku_latest));
+                                    if ($result_asset_issue->num_rows>0){
+                                        $conn->query(updateAssetForUserID($user_id,$sku_latest));
+                                    }else{
+                                        $conn->query(insertAssetForUserID($user_id,$sku_latest,$product_id_latest));
+                                    }
+
+
+
+                                }
+
                                 
                             }else{
                                 // Standard order based assetsHistory table update comes here
 
                                 $result_asset = $conn->query(getUserAssetsByUserID($user_id,$sku));
-                                if ($result_product_details->num_rows>0){
+                                if ($result_asset->num_rows>0){
                                     // Call to update query
                                     if ($conn->query(updateAssetForUserID($user_id,$sku)) === TRUE){
                                         error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.");
