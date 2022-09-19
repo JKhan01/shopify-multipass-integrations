@@ -1,8 +1,8 @@
 <?php 
-    $username='u886168621_wrprod';
-    $hostname='151.106.124.201';
-    $database='u886168621_wrprod';
-    $password='Reset123!';
+    $username='<user-name>';
+    $hostname='<host-server-name>';
+    $database='<database-name>';
+    $password='<password>';
 
     $conn = new mysqli($hostname,$username,$password,$database);
 

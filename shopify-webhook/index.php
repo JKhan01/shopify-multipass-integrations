@@ -74,29 +74,38 @@
                                         $sku_latest = $row["sku"];
                                         $product_id_latest = $row["productsTypeID"];
                                     }
-
+                                    
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Latest Issue Details: SKU- ".$sku_latest,3,'_includes/error.log');
                                     // Update the Asset History Table for Subscription SKU
 
                                     $result_asset_sub = $conn->query(getUserAssetsByUserID($user_id,$sku));
                                     if ($result_asset_sub->num_rows>0){
                                         if ($conn -> query(updateSubscriptionAssetForUserID($user_id,$sku)) === TRUE){
-                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.");
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.",3,'_includes/error.log');
                                         }else{
-                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to update subscription entry into Assets Table.");
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to update subscription entry into Assets Table.",3,'_includes/error.log');
                                         }
                                     }else{
-                                        if (conn -> query(insertSubscriptionAssetForUserID($user_id,$sku,$product_id)) === TRUE){
-                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.");
+                                        if ($conn -> query(insertSubscriptionAssetForUserID($user_id,$sku,$product_id)) === TRUE){
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.",3,'_includes/error.log');
                                         }else{
-                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert subscription entry into Assets Table.");
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert subscription entry into Assets Table.",3,'_includes/error.log');
                                         }
                                     }
 
                                     $result_asset_issue = $conn->query(getUserAssetsByUserID($user_id,$sku_latest));
                                     if ($result_asset_issue->num_rows>0){
-                                        $conn->query(updateAssetForUserID($user_id,$sku_latest));
+                                        if ($conn->query(updateAssetForUserID($user_id,$sku_latest)) === TRUE){
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.",3,'_includes/error.log');
+                                        }else{
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to update entry into Assets Table.",3,'_includes/error.log');
+                                        }
                                     }else{
-                                        $conn->query(insertAssetForUserID($user_id,$sku_latest,$product_id_latest));
+                                        if ($conn->query(insertAssetForUserID($user_id,$sku_latest,$product_id_latest)) === TRUE){
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.",3,'_includes/error.log');
+                                        }else{
+                                            error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert entry into Assets Table.",3,'_includes/error.log');
+                                        }
                                     }
 
 
@@ -106,21 +115,21 @@
                                 
                             }else{
                                 // Standard order based assetsHistory table update comes here
-
+                                error_log("\n".date("Y-m-d h:i:s",time())." Making Entry for single issue magazine/book",3,'_includes/error.log');
                                 $result_asset = $conn->query(getUserAssetsByUserID($user_id,$sku));
                                 if ($result_asset->num_rows>0){
                                     // Call to update query
                                     if ($conn->query(updateAssetForUserID($user_id,$sku)) === TRUE){
-                                        error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.");
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.",3,'_includes/error.log');
                                     }else{
-                                        error_log("\n".date("Y-m-d h:i:s",time())." Failed to update entry into Assets Table.");
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Failed to update entry into Assets Table.",3,'_includes/error.log');
                                     }
                                 }else{
                                     // Call to insert query
                                     if ($conn->query(insertAssetForUserID($user_id,$sku,$product_id)) === TRUE){
-                                        error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.");
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.",3,'_includes/error.log');
                                     }else{
-                                        error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert entry into Assets Table.");
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert entry into Assets Table.",3,'_includes/error.log');
                                     }
                                 }
 
@@ -131,7 +140,7 @@
                 }
                 
             }else{
-                error_log("\n".date("Y-m-d h:i:s",time()).' Failed to verify User Email. DB Updated Terminated',3,'_includes/error.log');    
+                error_log("\n".date("Y-m-d h:i:s",time()).' Failed to verify User Email. DB Update Terminated',3,'_includes/error.log');    
             }
 
 
