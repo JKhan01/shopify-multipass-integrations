@@ -113,6 +113,23 @@
                                 }
 
                                 
+                            }else if ($product_id==="4"){
+                                // Membership Update in Assets History
+                                error_log("\n".date("Y-m-d h:i:s",time())." Making Entry for membership Transaction",3,'_includes/error.log');
+                                $result_asset_member = $conn->query(getUserAssetsByUserID($user_id,$sku));
+                                if ($result_asset_member->num_rows>0){
+                                    if ($conn -> query(updateMembershipAssetForUserID($user_id,$sku)) === TRUE){
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Membership SKU Successfully.",3,'_includes/error.log');
+                                    }else{
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Failed to update subscription entry into Assets Table.",3,'_includes/error.log');
+                                    }
+                                }else{
+                                    if ($conn -> query(insertMembershipAssetForUserID($user_id,$sku,$product_id)) === TRUE){
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for New Membership SKU Successfully.",3,'_includes/error.log');
+                                    }else{
+                                        error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert subscription entry into Assets Table.",3,'_includes/error.log');
+                                    }
+                                }
                             }else{
                                 // Standard order based assetsHistory table update comes here
                                 error_log("\n".date("Y-m-d h:i:s",time())." Making Entry for single issue magazine/book",3,'_includes/error.log');

@@ -64,4 +64,31 @@
         
         return $query;
     }
+
+    function insertMembershipAssetForUserID($user_id,$sku,$product_type){
+        $startYear = date('Y',time());
+        $startMonth = date('m',time());
+        $endMonth = $startMonth - 1;
+        $endYear = (int)date('Y',time());
+        $endYear += 1;
+        $endYearString = $endYear."-".$endMonth;
+        $startYearString = $startYear."-".$startMonth;
+        $query = "insert into assetsHistory (`utc_timestamp`, `productsTypeID`,`sku`,`shopifyOrder`,`usersID`, `expirationFrom`, `expirationTo`) values ";
+        $query = $query."(utc_timestamp(),".$product_type.",'".$sku."','Y',".$user_id.",'".$startYearString."','".$endYearString."')";
+
+        return $query;
+    }
+
+    function updateMembershipAssetForUserID($user_id,$sku){
+        $startYear = date('Y',time());
+        $startMonth = date('m',time());
+        $endMonth = $startMonth - 1;
+        $endYear = (int)date('Y',time());
+        $endYear += 1;
+        $endYearString = $endYear."-".$endMonth;
+        $startYearString = $startYear."-".$startMonth;
+        $query = "update assetsHistory set `utc_timestamp`=utc_timestamp(),shopifyOrder='Y', expirationFrom='".$startYearString."', expirationTo='".$endYearString."'  where assetsHistoryID=(select assetsHistoryID from assetsHistory where usersID=".$user_id." and sku='".$sku."')";
+        
+        return $query;
+    }
 ?>
