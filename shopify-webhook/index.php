@@ -90,7 +90,7 @@
 
                     $address_1 = $webhook_data["billing_address"]["address1"];
                     $address_2 = $webhook_data["billing_address"]["address2"];
-                    $address_2 = $address_2==null?"":$address_2;
+                    // $address_2 = $address_2==null?"":$address_2;
 
                     $city = $webhook_data["billing_address"]["city"];
                     $state = $webhook_data["billing_address"]["province"];

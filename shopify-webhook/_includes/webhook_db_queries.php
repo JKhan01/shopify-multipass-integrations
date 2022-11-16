@@ -121,7 +121,7 @@
         `isDefault`)
         values
         (".$address->getUser_id().","
-        .$address->getAddress_type().",'".$address->getAddress_1()."','".$address->getAddress_1()."','".$address->getCity()."','".
+        .$address->getAddress_type().",'".$address->getAddress_1()."','".$address->getAddress_2()."','".$address->getCity()."','".
         $address->getState()."','".$address->getZip()."','".$address->getCountry()."',".$address->getIs_international().",".$address->getIs_default().")";
 
         return $query;
