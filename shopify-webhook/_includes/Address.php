@@ -4,7 +4,7 @@
         private $address_id;
 
         private $user_id;
-        private $address_type;
+        private $address_type = 1;
         private $address_1;
         private $address_2;
         private $city;

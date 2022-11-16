@@ -101,7 +101,7 @@
     }
 
     function getMaxUserID(){
-        $query = "select LAST_INSERT_ID()";
+        $query = "select LAST_INSERT_ID() as user_id";
         return $query;
     }
 
