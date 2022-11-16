@@ -64,11 +64,12 @@
                     if ($result_product_details->num_rows>0){
                         while ($row = $result_product_details -> fetch_assoc()){
                             $product_id = $row["productsTypeID"];
+                            $product_sku = $row["sku"]
                             error_log("\n".date("Y-m-d h:i:s",time())." Fetched Product Data: ".$row["productsTypeID"].",".$row["sku"].",".$row["title"],3,'_includes/error.log');
                             if ($product_id === "3"){
                                 // Subscription Logic Comes Here
                                 $sku_latest = "";
-                                $result_sku_latest = $conn->query(getLatestProductBySKUQuery('DEMD'));
+                                $result_sku_latest = $conn->query(getLatestProductBySKUQuery($product_sku));
                                 if ($result_sku_latest->num_rows>0){
                                     while ($row = $result_sku_latest -> fetch_assoc()) {
                                         $sku_latest = $row["sku"];

@@ -91,4 +91,68 @@
         
         return $query;
     }
+
+    function insertShopifyUserDetails($user){
+        $query = "insert into users (`firstname`,`lastname`,`company`,`password`,`passwordexpires`,`isActive`,`isDeleted`) values (";
+        $query = $query."'".$user->get_first_name()."','".$user->get_last_name()."','".$user->get_company()."','".$user->get_password()."',str_to_date('";
+        $query = $query.$user->get_password_expires()."','%Y-%m-%d'),".$user->get_is_active().",".$user->get_is_deleted().")";
+
+        return $query;
+    }
+
+    function getMaxUserID(){
+        $query = "select LAST_INSERT_ID()";
+        return $query;
+    }
+
+    function insertShopifyUserAddress($address){
+
+        $query = "insert into usersAddresses
+        (
+        `usersID`,
+        `addressTypeID`,
+        `address1`,
+        `address2`,
+        `city`,
+        `state`,
+        `zip`,
+        `country`,
+        `isInternational`,
+        `isDefault`)
+        values
+        (".$address->getUser_id().","
+        .$address->getAddress_type().",'".$address->getAddress_1()."','".$address->getAddress_1()."','".$address->getCity()."','".
+        $address->getState()."','".$address->getZip()."','".$address->getCountry()."',".$address->getIs_international().",".$address->getIs_default().")";
+
+        return $query;
+
+    }
+
+    function insertShopifyUserEmail($email){
+        $query = "insert into usersEmails
+        (
+        `usersID`,
+        `emailsTypeID`,
+        `emailAddress`,
+        `isDefault`,
+        `optIn`)
+        values(".$email->getUsersID().",".$email->getEmailsTypeID().",'".$email->getEmailAddress()."',".$email->getIsDefault().",".$email->getOptIn().")";
+
+        return $query;
+    }
+
+    function insertShopifyUserPhone($phone){
+
+        $query = "insert into usersPhones
+        (
+        `usersID`,
+        `phonesTypeID`,
+        `phoneNumber`,
+        `isDefault`)
+        values
+        (".$phone->getUserID().",".$phone->getPhoneTypeID().",'".$phone->getPhoneNumber()."',".$phone->getIsDefault().")";
+
+        return $query;
+
+    }
 ?>
