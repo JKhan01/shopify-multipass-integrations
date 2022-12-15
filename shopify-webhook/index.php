@@ -14,7 +14,9 @@
         echo"\n".$connection_flag;
 
         error_log("\n".date("Y-m-d h:i:s",time())." Get Request Handling",3,'_includes/error.log');
-
+        http_response_code(200);
+        $conn->close();
+        $connection_flag=false;
         
     }elseif($_SERVER['REQUEST_METHOD'] === 'POST'){
         
@@ -156,6 +158,7 @@
                             error_log("\n".date("Y-m-d h:i:s",time())." Fetched Product Data: ".$row["productsTypeID"].",".$row["sku"].",".$row["title"],3,'_includes/error.log');
                             if ($product_id === "3"){
                                 // Subscription Logic Comes Here
+                                error_log("\n".date("Y-m-d h:i:s",time())." Making Entry for Subscription Transaction",3,'_includes/error.log');
                                 $sku_latest = "";
                                 $result_sku_latest = $conn->query(getLatestProductBySKUQuery($product_sku));
                                 if ($result_sku_latest->num_rows>0){
@@ -241,6 +244,8 @@
 
                             }
                         }
+                    }else{
+                        error_log("\n".date("Y-m-d h:i:s",time()).' No Entry exists for the SKU obtained from Webhook Payload in the Database. Order Updates will not be made in tables.',3,'_includes/error.log');        
                     }
                     
                 }
@@ -249,11 +254,14 @@
             }
 
 
-
+            $conn->close();
+            $connection_flag=false;
             http_response_code(200);    
             
         }else{
             
+            $conn->close();
+            $connection_flag=false;
             error_log("\n".date("Y-m-d h:i:s",time()).' Failed to verify Webhook',3,'_includes/error.log');
             http_response_code(401);
         }
@@ -264,7 +272,6 @@
         
     }
     
-    $conn->close();
-    $connection_flag=false;
+
 
 ?>
