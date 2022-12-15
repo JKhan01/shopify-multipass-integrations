@@ -245,7 +245,7 @@
                             }
                         }
                     }else{
-                        error_log("\n".date("Y-m-d h:i:s",time()).' No Entry exists for the SKU obtained from Webhook Payload in the Database. Order Updates will not be made in tables.',3,'_includes/error.log');        
+                        error_log("\n".date("Y-m-d h:i:s",time()).' No Entry exists for the SKU '.$sku.' obtained from Webhook Payload in the Database. Order Updates will not be made in tables.',3,'_includes/error.log');        
                     }
                     
                 }
