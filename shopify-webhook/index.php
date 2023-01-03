@@ -245,7 +245,50 @@
                             }
                         }
                     }else{
-                        error_log("\n".date("Y-m-d h:i:s",time()).' No Entry exists for the SKU '.$sku.' obtained from Webhook Payload in the Database. Order Updates will not be made in tables.',3,'_includes/error.log');        
+                        error_log("\n".date("Y-m-d h:i:s",time()).' No Entry exists for the SKU '.$sku.' obtained from Webhook Payload in the Database. SKU Check for Printed Entity Begins.',3,'_includes/error.log');
+                        if (preg_match("/[A-Z]{3}P-[0-9]{6}/",$sku)){
+                            // Printed Single Magazine Issue
+                            error_log("\n".date("Y-m-d h:i:s",time()).' SKU '.$sku.' is a Printed Magazine Issue',3,'_includes/error.log');
+                            error_log("\n".date("Y-m-d h:i:s",time())." Making Entry for single issue magazine/book",3,'_includes/error.log');
+                            $product_id = "1";
+                            $result_asset = $conn->query(getUserAssetsByUserID($user_id,$sku));
+                            if ($result_asset->num_rows>0){
+                                // Call to update query
+                                if ($conn->query(updateAssetForUserID($user_id,$sku)) === TRUE){
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.",3,'_includes/error.log');
+                                }else{
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Failed to update entry into Assets Table.",3,'_includes/error.log');
+                                }
+                            }else{
+                                // Call to insert query
+                                if ($conn->query(insertAssetForUserID($user_id,$sku,$product_id)) === TRUE){
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated Successfully.",3,'_includes/error.log');
+                                }else{
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert entry into Assets Table.",3,'_includes/error.log');
+                                }
+                            }
+                        }elseif (strpos($sku,"P")===3){
+                            // Printed Entity Subscription
+                            error_log("\n".date("Y-m-d h:i:s",time()).' SKU '.$sku.' is a Printed Entity Subscription',3,'_includes/error.log');
+                            error_log("\n".date("Y-m-d h:i:s",time())." Making Entry for Subscription Transaction",3,'_includes/error.log');
+                            $product_id = "3";
+                            $result_asset_sub = $conn->query(getUserAssetsByUserID($user_id,$sku));
+                            if ($result_asset_sub->num_rows>0){
+                                if ($conn -> query(updateSubscriptionAssetForUserID($user_id,$sku)) === TRUE){
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.",3,'_includes/error.log');
+                                }else{
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Failed to update subscription entry into Assets Table.",3,'_includes/error.log');
+                                }
+                            }else{
+                                if ($conn -> query(insertSubscriptionAssetForUserID($user_id,$sku,$product_id)) === TRUE){
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Assets Table Updated for Subscription SKU Successfully.",3,'_includes/error.log');
+                                }else{
+                                    error_log("\n".date("Y-m-d h:i:s",time())." Failed to insert subscription entry into Assets Table.",3,'_includes/error.log');
+                                }
+                            }
+                        }else{
+                            error_log("\n".date("Y-m-d h:i:s",time())." Invalid SKU. No Entry Made into AssetsHistory Table.",3,'_includes/error.log');
+                        }
                     }
                     
                 }

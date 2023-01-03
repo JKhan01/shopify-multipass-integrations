@@ -41,7 +41,7 @@
     function insertSubscriptionAssetForUserID($user_id,$sku,$product_type){
         $startYear = date('Y',time());
         $startMonth = date('m',time());
-        $endMonth = $startMonth - 1;
+        $endMonth = $startMonth;
         $endYear = (int)date('Y',time());
         $endYear += 1;
         $endYearString = $endYear."-".$endMonth;
@@ -55,7 +55,7 @@
     function updateSubscriptionAssetForUserID($user_id,$sku){
         $startYear = date('Y',time());
         $startMonth = date('m',time());
-        $endMonth = $startMonth - 1;
+        $endMonth = $startMonth;
         $endYear = (int)date('Y',time());
         $endYear += 1;
         $endYearString = $endYear."-".$endMonth;
@@ -68,7 +68,7 @@
     function insertMembershipAssetForUserID($user_id,$sku,$product_type){
         $startYear = date('Y',time());
         $startMonth = date('m',time());
-        $endMonth = $startMonth - 1;
+        $endMonth = $startMonth;
         $endYear = (int)date('Y',time());
         $endYear += 1;
         $endYearString = $endYear."-".$endMonth;
@@ -82,7 +82,7 @@
     function updateMembershipAssetForUserID($user_id,$sku){
         $startYear = date('Y',time());
         $startMonth = date('m',time());
-        $endMonth = $startMonth - 1;
+        $endMonth = $startMonth;
         $endYear = (int)date('Y',time());
         $endYear += 1;
         $endYearString = $endYear."-".$endMonth;
